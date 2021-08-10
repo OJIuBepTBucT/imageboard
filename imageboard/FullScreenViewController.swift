@@ -21,7 +21,7 @@ class FullScreenViewController: UICollectionViewController {
 
 
     private var selectedImages = [UIImage]()
-
+    */sdfsdfsdfsdf */
     private let itemsPerRow: CGFloat = 1 //колличество ячеек в ряду
     private let sectionInserts = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
