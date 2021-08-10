@@ -14,14 +14,6 @@ class PhotosCell: UICollectionViewCell { //разбираемся с ячейк�
     static let reuseId = "PhotosCell"
     
     
-//    private let checkmark: UIImageView = { //устанавливаем галочку в случае выбора фотографии и ячейки
-//        let image = UIImage(named: "bird")
-//        let imageView = UIImageView(image: image)
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.alpha = 0
-//        return imageView
-//    }()
-    
      let photoImageView: UIImageView = { //устанавливаем в ячейку фотографию
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -41,12 +33,7 @@ class PhotosCell: UICollectionViewCell { //разбираемся с ячейк�
     }
     
     
-//    override var isSelected: Bool { //ячейка или нажата или нет
-//        didSet {
-//            updateSelectedState()
-//        }
-//    }
-    
+
    
     
     override func prepareForReuse() { //переопределние метода для фотографий чтобы они не накладывались друг на друга при перелистовании
@@ -54,17 +41,13 @@ class PhotosCell: UICollectionViewCell { //разбираемся с ячейк�
         photoImageView.image = nil
     }
     
-//    private func updateSelectedState() {
-//        photoImageView.alpha = isSelected ? 0.7 : 1
-//        checkmark.alpha = isSelected ? 1 : 0
-//    }
     
     override init(frame: CGRect) { //вызов
         super.init(frame: frame)
         
-       // updateSelectedState()
+
         setupPhotoImageView()
-       // setupCheckmarkView()
+  
     }
     
     private func setupPhotoImageView() { //устанавливаем расположение фотографии на ячейки при помощи якорей
@@ -75,12 +58,7 @@ class PhotosCell: UICollectionViewCell { //разбираемся с ячейк�
         photoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         
     }
-    
-//    private func setupCheckmarkView() { //устанавливаем расположение галочки
-//        addSubview(checkmark)
-//        checkmark.trailingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: -8).isActive = true
-//        checkmark.bottomAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: -8).isActive = true
-//    }
+
 
     
     

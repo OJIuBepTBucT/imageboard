@@ -20,10 +20,6 @@ class PhotosCollectionViewController: UICollectionViewController {
     private let itemsPerRow: CGFloat = 2 //колличество ячеек в ряду
     private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     
-    private lazy var actionBarButtonItem: UIBarButtonItem = { //кнопка поделится. иницилизирует себя только когда на неё нажимают
-       return UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(actionBarButtonTapped))
-    }()
-    
     private var numberOfSelectedPhotos: Int {
         return collectionView.indexPathsForSelectedItems?.count ?? 0
     }
@@ -32,43 +28,16 @@ class PhotosCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         
         
-        undateNavButtonsState()
+    
         collectionView.backgroundColor = .white
         setupNavigationBar()
         setupCollectionView()
         setupSearchBar()
     }
-    
-    private func undateNavButtonsState() {
-        actionBarButtonItem.isEnabled = numberOfSelectedPhotos > 0
-    }
-    
-    func refresh() {
-        self.selectedImages.removeAll()
-        self.collectionView.selectItem(at: nil, animated: true, scrollPosition: [])
-        undateNavButtonsState()
-    }
-    
-    // MARK: - работа кнопки поделится, она работает с элементами которые выбраны
-    
-    
-    @objc private func actionBarButtonTapped(sender: UIBarButtonItem) {
-        print(#function)
 
-      //  let shareController = UIActivityViewController(activityItems: selectedImages, applicationActivities: nil)
+    
 
 
-//        shareController.completionWithItemsHandler = { _, bool, _, _ in
-//            if bool {
-//                self.refresh()
-//            }
-//        }
-
-//        shareController.popoverPresentationController?.barButtonItem = sender
-//        shareController.popoverPresentationController?.permittedArrowDirections = .any
-//        present(shareController, animated: true, completion: nil)
-    }
-    
     
     // MARK: - ячейки и тд
     
@@ -88,7 +57,7 @@ class PhotosCollectionViewController: UICollectionViewController {
         titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         titleLabel.textColor = #colorLiteral(red: 0.5019607843, green: 0.4980392157, blue: 0.4980392157, alpha: 1)
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: titleLabel) //ставим его вместо левой кнопки
-      //  navigationItem.rightBarButtonItems = [actionBarButtonItem] //правой кнопкой ставим кнопку "поделится"
+   
     }
     
     private func setupSearchBar() { //организовываем строку поиска в навигейшн баре
@@ -113,34 +82,23 @@ class PhotosCollectionViewController: UICollectionViewController {
         return cell
     }
     
-    
-//    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        undateNavButtonsState()
-//        let cell = collectionView.cellForItem(at: indexPath) as! PhotosCell
-//        guard let image = cell.photoImageView.image else { return }
-//            selectedImages.append(image)
-//
-//    }
-//
-//    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        undateNavButtonsState()
-//        let cell = collectionView.cellForItem(at: indexPath) as! PhotosCell
-//        guard let image = cell.photoImageView.image else { return }
-//        if let index = selectedImages.firstIndex(of: image) {
-//            selectedImages.remove(at: index)
-//        }
-//   }
-    
+   
+
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let FullScreenVC = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+            layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+            layout.scrollDirection = .horizontal
+            layout.estimatedItemSize = .zero
+        layout.itemSize = .zero
+        
+        let FullScreenVC = FullScreenViewController(collectionViewLayout: layout)
         FullScreenVC.photos = photos
         FullScreenVC.indexPath = indexPath
         self.navigationController?.pushViewController(FullScreenVC, animated: true)
     }
+    
 }
-    
-    
 
 
 // MARK: - через extension задаём работу строки поиска
@@ -157,7 +115,6 @@ extension PhotosCollectionViewController: UISearchBarDelegate {
                 guard let fetchedPhotos = searchResults else { return }
                 self?.photos = fetchedPhotos.results
                 self?.collectionView.reloadData()
-                self?.refresh()
             }
         })
     }

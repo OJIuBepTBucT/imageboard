@@ -8,7 +8,9 @@
 import UIKit
 
 class MainTabBarController: UITabBarController { //таб бар контроллер
-    
+    deinit {
+        print("deinit")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,3 +31,4 @@ class MainTabBarController: UITabBarController { //таб бар контрол�
         return navigationVC
     }
 }
+

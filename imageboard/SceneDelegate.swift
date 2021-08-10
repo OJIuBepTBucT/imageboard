@@ -18,9 +18,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
         
-        window = UIWindow()
-        window?.makeKeyAndVisible()
-        window?.rootViewController = MainTabBarController() //назначаем новый рут контроллер а именно MainTabBarController
+//        window = UIWindow()
+//        window?.makeKeyAndVisible()
+       // window?.rootViewController = MainTabBarController() //назначаем новый рут контроллер а именно MainTabBarController
         if let windowScene = scene as? UIWindowScene{
                     
                 

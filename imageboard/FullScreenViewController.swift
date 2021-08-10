@@ -23,7 +23,7 @@ class FullScreenViewController: UICollectionViewController {
     private var selectedImages = [UIImage]()
 
     private let itemsPerRow: CGFloat = 1 //колличество ячеек в ряду
-    private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    private let sectionInserts = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
 
 
@@ -41,7 +41,9 @@ class FullScreenViewController: UICollectionViewController {
        
         undateNavButtonsState()
         collectionView.backgroundColor = .white
-
+        collectionView.isPagingEnabled = true
+        
+        setupNavigationBar()
         setupCollectionView()
        
 
@@ -86,7 +88,7 @@ class FullScreenViewController: UICollectionViewController {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "FullScreenCell")
         collectionView.register(FullScreenCell.self, forCellWithReuseIdentifier: FullScreenCell.reuseId)
 
-        collectionView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        //collectionView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         collectionView.contentInsetAdjustmentBehavior = .automatic
         collectionView.allowsMultipleSelection = true
 
@@ -96,7 +98,7 @@ class FullScreenViewController: UICollectionViewController {
         titleLabel.text = "инфо"
         titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         titleLabel.textColor = #colorLiteral(red: 0.5019607843, green: 0.4980392157, blue: 0.4980392157, alpha: 1)
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: titleLabel) //ставим его вместо левой кнопки
+       // navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: titleLabel) //ставим его вместо левой кнопки
         navigationItem.rightBarButtonItems = [actionBarButtonItem] //правой кнопкой ставим кнопку "поделится"
     }
 
@@ -114,6 +116,7 @@ class FullScreenViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullScreenCell.reuseId, for: indexPath) as! FullScreenCell
         let unspashPhoto = photos[indexPath.item]
         cell.unsplashPhoto = unspashPhoto
+       
         return cell
     }
 
@@ -128,7 +131,9 @@ class FullScreenViewController: UICollectionViewController {
     override  func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         undateNavButtonsState()
         let cell = collectionView.cellForItem(at: indexPath) as! FullScreenCell
+        
         guard let image = cell.photoImageView.image else { return }
+        
         if let index = selectedImages.firstIndex(of: image) {
             selectedImages.remove(at: index)
         }
@@ -141,20 +146,18 @@ class FullScreenViewController: UICollectionViewController {
 extension FullScreenViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let photo = photos[indexPath.item]
-        let paddingSpace = sectionInserts.left * (itemsPerRow + 1)
-        let availableWidth = view.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
-        let height = CGFloat(photo.height) * widthPerItem / CGFloat(photo.width)
-        return CGSize(width: widthPerItem, height: height)
+        return UIScreen.main.bounds.size
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInserts
+        return .zero
     }
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInserts.left
+        return 0
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
 }
 

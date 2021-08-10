@@ -35,8 +35,10 @@ class FullScreenCell: UICollectionViewCell { //разбираемся с яче�
         didSet {
             let photoUrl = unsplashPhoto.urls["regular"]
             guard let imageUrl = photoUrl, let url = URL(string: imageUrl) else { return }
+            setupPhotoImageView()
+            setupCheckmarkView()
             photoImageView.sd_setImage(with: url, completed: nil)
-            
+           
             
         }
     }
@@ -52,7 +54,9 @@ class FullScreenCell: UICollectionViewCell { //разбираемся с яче�
     
     override func prepareForReuse() { //переопределние метода для фотографий чтобы они не накладывались друг на друга при перелистовании
         super.prepareForReuse()
+        
         photoImageView.image = nil
+       
     }
     
     private func updateSelectedState() {
@@ -62,19 +66,24 @@ class FullScreenCell: UICollectionViewCell { //разбираемся с яче�
     
     override init(frame: CGRect) { //вызов
         super.init(frame: frame)
-        
         updateSelectedState()
-        setupPhotoImageView()
-        setupCheckmarkView()
+       
+       
     }
     
     private func setupPhotoImageView() { //устанавливаем расположение фотографии на ячейки при помощи якорей
         addSubview(photoImageView)
-        photoImageView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        photoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        photoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        photoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        
+
+        let availableWidth = frame.width
+        let widthPerItem = availableWidth
+        let height = CGFloat(unsplashPhoto.height) * widthPerItem / CGFloat(unsplashPhoto.width)
+
+        photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        photoImageView.widthAnchor.constraint(equalToConstant: widthPerItem).isActive = true
+        photoImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        photoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        photoImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+
     }
     
     private func setupCheckmarkView() { //устанавливаем расположение галочки
@@ -90,3 +99,4 @@ class FullScreenCell: UICollectionViewCell { //разбираемся с яче�
     }
     
 }
+
